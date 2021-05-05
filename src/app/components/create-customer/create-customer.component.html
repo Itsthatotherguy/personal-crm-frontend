@@ -1,0 +1,62 @@
+<nz-page-header nzBackIcon>
+    <nz-page-header-title
+        >{{ !editingMode ? "Create" : "Update" }} customer</nz-page-header-title
+    >
+</nz-page-header>
+
+<form nz-form [formGroup]="customerForm" class="form" (ngSubmit)="onSubmit()">
+    <nz-form-item>
+        <nz-form-control nzErrorTip="Please provide a valid name.">
+            <nz-input-group>
+                <input
+                    type="text"
+                    nz-input
+                    formControlName="name"
+                    placeholder="Name"
+                />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control nzErrorTip="Please provide a valid email address.">
+            <nz-input-group>
+                <input
+                    type="text"
+                    nz-input
+                    formControlName="email"
+                    placeholder="Email"
+                />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control nzErrorTip="Please provide a valid phone number.">
+            <nz-input-group>
+                <input
+                    type="text"
+                    nz-input
+                    formControlName="phoneNumber"
+                    placeholder="Phone number"
+                />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control>
+            <nz-space>
+                <button
+                    type="submit"
+                    *nzSpaceItem
+                    nz-button
+                    nzType="primary"
+                    [disabled]="!customerForm.valid"
+                >
+                    Save
+                </button>
+                <button *nzSpaceItem nz-button (click)="onClear()">
+                    Clear
+                </button>
+            </nz-space>
+        </nz-form-control>
+    </nz-form-item>
+</form>

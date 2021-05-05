@@ -1,0 +1,21 @@
+<ul nz-menu nzMode="inline" class="sider-menu">
+    <nz-space class="controls-container" nzDirection="vertical">
+        <input
+            *nzSpaceItem
+            nz-input
+            placeholder="Search ..."
+            [(ngModel)]="filterString"
+        />
+        <div *nzSpaceItem class="button-container">
+            <button nz-button (click)="onClickCreateCustomer()">Add</button>
+        </div>
+    </nz-space>
+    <nz-divider></nz-divider>
+    <li
+        nz-menu-item
+        *ngFor="let customer of customers | filter: filterString | sorting"
+        nzMatchRouter
+    >
+        <app-sidebar-menu-item [customer]="customer"></app-sidebar-menu-item>
+    </li>
+</ul>

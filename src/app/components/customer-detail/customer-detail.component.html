@@ -1,0 +1,30 @@
+<nz-page-header>
+    <nz-page-header-title>{{ customer.name }}</nz-page-header-title>
+    <nz-page-header-extra>
+        <button nz-button nzType="primary" (click)="onClickEditCustomer()">
+            Edit
+        </button>
+        <button nz-button nzDanger (click)="onClickDeleteCustomer()">
+            Delete
+        </button>
+    </nz-page-header-extra>
+</nz-page-header>
+<nz-space nzDirection="vertical" nzSize="middle">
+    <app-description
+        *nzSpaceItem
+        title="UserID"
+        [body]="customer.id"
+    ></app-description>
+
+    <app-description
+        *nzSpaceItem
+        title="Email"
+        [body]="customer.email"
+    ></app-description>
+
+    <app-description
+        *nzSpaceItem
+        title="Phone"
+        [body]="customer.phoneNumber"
+    ></app-description>
+</nz-space>

@@ -1,4 +1,22 @@
-:host {
+.outer-layout {
+    min-height: 100vh;
+}
+
+.outer-content {
+    padding: 50px;
+}
+
+.inner-layout {
+    padding: 24px 0;
+    background: #fff;
+}
+
+.inner-content {
+    padding: 0 24px;
+    min-height: 280px;
+}
+
+/* :host {
   display: flex;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -77,4 +95,4 @@ nz-content {
   padding: 24px;
   background: #fff;
   height: 100%;
-}
+} */

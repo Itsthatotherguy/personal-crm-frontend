@@ -1,0 +1,7 @@
+nz-space {
+    width: 100%;
+}
+
+.ant-row:not(:last-of-type) {
+    margin-bottom: 16px;
+}
