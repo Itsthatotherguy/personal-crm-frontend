@@ -12,11 +12,24 @@
     </nz-space>
     <nz-divider></nz-divider>
     <nz-spin nzSimple style="text-align: center" *ngIf="isFetching"></nz-spin>
-    <li
-        nz-menu-item
-        *ngFor="let customer of customers | filter: filterString | sorting"
-        nzMatchRouter
-    >
-        <app-sidebar-menu-item [customer]="customer"></app-sidebar-menu-item>
-    </li>
+    <ng-container *ngIf="!isFetching">
+        <li
+            nz-menu-item
+            *ngFor="let customer of customers | filter: filterString | sorting"
+            nzMatchRouter
+        >
+            <app-sidebar-menu-item
+                [customer]="customer"
+            ></app-sidebar-menu-item>
+        </li>
+        <ng-container *ngIf="!isFetching && customers.length === 0">
+            <nz-empty
+                nzNotFoundImage="simple"
+                nzNotFoundContent="No customers exist yet."
+            ></nz-empty>
+            <p nz-typography style="text-align: center">
+                <a routerLink="new">Add one now</a>
+            </p>
+        </ng-container>
+    </ng-container>
 </ul>

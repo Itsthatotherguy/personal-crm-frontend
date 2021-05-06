@@ -1,3 +1,4 @@
+import { AuthInterceptor } from './auth/auth.interceptor';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import en from '@angular/common/locales/en';
@@ -23,6 +24,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -86,10 +88,12 @@ registerLocaleData(en);
         NzResultModule,
         NzGridModule,
         NzSpinModule,
+        NzEmptyModule,
     ],
     providers: [
         { provide: NZ_I18N, useValue: en_US },
         { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     ],
     bootstrap: [AppComponent],
 })

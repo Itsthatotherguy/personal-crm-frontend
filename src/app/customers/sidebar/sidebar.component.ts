@@ -34,7 +34,7 @@ export class SidebarComponent implements OnInit {
     private fetchCustomers(): void {
         this.customerService.getCustomers().subscribe({
             next: () => {
-                // this.isFetching = false;
+                this.isFetching = false;
             },
             error: (errorResponse: HttpErrorResponse) => {
                 if (!errorResponse.status) {

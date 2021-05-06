@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { AuthService } from './../auth/auth.service';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, Subject, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { Customer } from './customer.model';
 
 @Injectable({
@@ -29,7 +30,10 @@ export class CustomerService {
 
     private customers: Customer[] = [];
 
-    constructor(private httpClient: HttpClient) {}
+    constructor(
+        private httpClient: HttpClient,
+        private authService: AuthService
+    ) {}
 
     private setCustomers(customers: Customer[]): void {
         this.customers = customers;
@@ -38,6 +42,7 @@ export class CustomerService {
 
     getCustomers(): Observable<Customer[]> {
         return this.httpClient.get<Customer[]>('customers').pipe(
+            catchError(this.handleErrorMessages),
             tap((customers) => {
                 this.setCustomers(customers);
             })
@@ -93,5 +98,28 @@ export class CustomerService {
                 this.customersChanged.next(this.customers.slice());
             })
         );
+    }
+
+    private handleErrorMessages(errorResponse: HttpErrorResponse) {
+        let errorMessage = 'An unknown error has occurred';
+
+        if (!errorResponse.error || !errorResponse.error.message) {
+            return throwError(errorMessage);
+        }
+
+        // if (errorResponse.status === 401) {
+        //     this.authService.logout();
+        // }
+
+        // switch (errorResponse.error) {
+        //   case value:
+
+        //     break;
+
+        //   default:
+        //     break;
+        // }
+
+        return throwError(errorMessage);
     }
 }
