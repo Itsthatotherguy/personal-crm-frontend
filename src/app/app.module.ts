@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import en from '@angular/common/locales/en';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
 
@@ -22,6 +22,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -40,6 +41,7 @@ import { WelcomeComponent } from './customers/welcome/welcome.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
+import { ApiInterceptor } from './shared/api.interceptor';
 
 registerLocaleData(en);
 
@@ -83,8 +85,12 @@ registerLocaleData(en);
         NzInputModule,
         NzResultModule,
         NzGridModule,
+        NzSpinModule,
     ],
-    providers: [{ provide: NZ_I18N, useValue: en_US }],
+    providers: [
+        { provide: NZ_I18N, useValue: en_US },
+        { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

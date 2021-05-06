@@ -10,7 +10,7 @@ import { CustomerService } from '../customer.service';
     styleUrls: ['./customer-detail.component.css'],
 })
 export class CustomerDetailComponent implements OnInit {
-    customerId: number;
+    customerId: string;
     customer: Customer;
 
     constructor(
@@ -23,7 +23,7 @@ export class CustomerDetailComponent implements OnInit {
     ngOnInit(): void {
         this.route.params.subscribe({
             next: (params: Params) => {
-                this.customerId = +params['id'];
+                this.customerId = params['id'];
                 this.customer = this.customerService.getCustomer(
                     this.customerId
                 );

@@ -9,7 +9,7 @@ import { CustomerService } from '../customer.service';
     styleUrls: ['./create-customer.component.css'],
 })
 export class CreateCustomerComponent implements OnInit {
-    customerId: number;
+    customerId: string;
     editingMode = false;
 
     customerForm: FormGroup;
@@ -24,7 +24,7 @@ export class CreateCustomerComponent implements OnInit {
         this.route.params.subscribe({
             next: (params: Params) => {
                 if (!!params['id']) {
-                    this.customerId = +params['id'];
+                    this.customerId = params['id'];
                     this.editingMode = true;
                 }
             },
@@ -34,21 +34,20 @@ export class CreateCustomerComponent implements OnInit {
     }
 
     onSubmit(): void {
-        let returningId: number;
+        let returningId: string;
 
         if (this.editingMode) {
-            this.customerService.updateCustomer(
-                this.customerId,
-                this.customerForm.value
-            );
+            this.customerService
+                .updateCustomer(this.customerId, this.customerForm.value)
+                .subscribe();
 
             returningId = this.customerId;
         } else {
-            const id = this.customerService.createCustomer(
-                this.customerForm.value
-            );
-
-            returningId = id;
+            this.customerService
+                .createCustomer(this.customerForm.value)
+                .subscribe((customer) => {
+                    returningId = customer.id;
+                });
         }
 
         this.router.navigate(['customers', returningId]);

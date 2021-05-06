@@ -11,6 +11,7 @@
         </div>
     </nz-space>
     <nz-divider></nz-divider>
+    <nz-spin nzSimple style="text-align: center" *ngIf="isFetching"></nz-spin>
     <li
         nz-menu-item
         *ngFor="let customer of customers | filter: filterString | sorting"
