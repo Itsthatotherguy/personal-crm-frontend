@@ -1,0 +1,28 @@
+<h3 nz-typography style="text-align: center">Login</h3>
+<form nz-form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <nz-form-item>
+        <nz-form-control>
+            <nz-input-group nzPrefixIcon="mail">
+                <input nz-input formControlName="email" placeholder="Email" />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control>
+            <nz-input-group nzPrefixIcon="lock">
+                <input
+                    nz-input
+                    type="password"
+                    formControlName="password"
+                    placeholder="Password"
+                />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <button nz-button type="submit" nzType="primary">Login</button>
+    </nz-form-item>
+</form>
+<p nz-typography>
+    Don't have an account yet? <a routerLink="../signup">Sign up</a> here.
+</p>

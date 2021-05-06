@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Customer } from '../models/customer.model';
+import { Customer } from './customer.model';
 
 @Injectable({
     providedIn: 'root',
@@ -26,6 +26,11 @@ export class CustomerService {
     ];
 
     constructor() {}
+
+    setCustomers(customers: Customer[]) {
+        this.customers = customers;
+        this.customersChanged.next(this.customers.slice());
+    }
 
     getCustomers(): Customer[] {
         return this.customers;

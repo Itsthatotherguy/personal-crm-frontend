@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Customer } from 'src/app/models/customer.model';
+import { Customer } from '../../customer.model';
 
 @Component({
     selector: 'app-sidebar-menu-item',

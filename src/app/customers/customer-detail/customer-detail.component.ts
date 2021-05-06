@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { Customer } from 'src/app/models/customer.model';
-import { CustomerService } from 'src/app/services/customer.service';
+import { Customer } from '../customer.model';
+import { CustomerService } from '../customer.service';
 
 @Component({
     selector: 'app-customer-detail',

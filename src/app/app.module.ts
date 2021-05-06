@@ -25,16 +25,21 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { CustomerDetailComponent } from './components/customer-detail/customer-detail.component';
-import { WelcomeComponent } from './components/welcome/welcome.component';
-import { DescriptionComponent } from './components/description/description.component';
-import { SidebarMenuItemComponent } from './components/sidebar/sidebar-menu-item/sidebar-menu-item.component';
-import { FooterComponent } from './components/footer/footer.component';
-import { CreateCustomerComponent } from './components/create-customer/create-customer.component';
-import { SortingPipe } from './pipes/sorting.pipe';
-import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { FilterPipe } from './pipes/filter.pipe';
+import { SidebarComponent } from './customers/sidebar/sidebar.component';
+import { CustomerDetailComponent } from './customers/customer-detail/customer-detail.component';
+import { AuthComponent } from './auth/auth.component';
+import { LoginComponent } from './auth/login/login.component';
+import { SignupComponent } from './auth/signup/signup.component';
+import { CreateCustomerComponent } from './customers/create-customer/create-customer.component';
+import { DescriptionComponent } from './customers/customer-detail/description/description.component';
+import { CustomersComponent } from './customers/customers.component';
+import { FilterPipe } from './customers/filter.pipe';
+import { SidebarMenuItemComponent } from './customers/sidebar/sidebar-menu-item/sidebar-menu-item.component';
+import { SortingPipe } from './customers/sorting.pipe';
+import { WelcomeComponent } from './customers/welcome/welcome.component';
+import { FooterComponent } from './shared/footer/footer.component';
+import { HeaderComponent } from './shared/header/header.component';
+import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 
 registerLocaleData(en);
 
@@ -51,6 +56,11 @@ registerLocaleData(en);
         SortingPipe,
         PageNotFoundComponent,
         FilterPipe,
+        AuthComponent,
+        HeaderComponent,
+        SignupComponent,
+        LoginComponent,
+        CustomersComponent,
     ],
     imports: [
         BrowserModule,
