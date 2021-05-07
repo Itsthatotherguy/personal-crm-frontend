@@ -1,7 +1,7 @@
-export class SignupRequest {
+export class CreateCustomerRequest {
     constructor(
         public name: string,
         public emailAddress: string,
-        public password: string
+        public phoneNumber: string
     ) {}
 }

@@ -1,14 +1,28 @@
 <h3 nz-typography style="text-align: center">Login</h3>
+<nz-alert
+    nzType="error"
+    nzMessage="{{ error }}"
+    *ngIf="error !== null"
+    style="margin-bottom: 8px"
+></nz-alert>
 <form nz-form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <nz-form-item>
-        <nz-form-control>
+        <nz-form-control nzHasFeedback [nzErrorTip]="emailErrorTip">
             <nz-input-group nzPrefixIcon="mail">
                 <input nz-input formControlName="email" placeholder="Email" />
+                <ng-template #emailErrorTip let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                        Please provide your email address
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('email')">
+                        Please provide a valid email address
+                    </ng-container>
+                </ng-template>
             </nz-input-group>
         </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-        <nz-form-control>
+        <nz-form-control nzHasFeedback [nzErrorTip]="passwordErrorTip">
             <nz-input-group nzPrefixIcon="lock">
                 <input
                     nz-input
@@ -16,11 +30,24 @@
                     formControlName="password"
                     placeholder="Password"
                 />
+                <ng-template #passwordErrorTip let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                        Please provide your password
+                    </ng-container>
+                </ng-template>
             </nz-input-group>
         </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-        <button nz-button type="submit" nzType="primary">Login</button>
+        <button
+            nz-button
+            type="submit"
+            nzType="primary"
+            [nzLoading]="isLoggingIn"
+            [disabled]="!loginForm.valid"
+        >
+            Login
+        </button>
     </nz-form-item>
 </form>
 <p nz-typography>

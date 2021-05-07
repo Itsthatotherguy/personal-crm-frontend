@@ -4,6 +4,20 @@
     >
 </nz-page-header>
 
+<ng-container *ngIf="errors.length > 0">
+    <nz-alert
+        nzType="error"
+        nzMessage="The following errors occurred:"
+        [nzDescription]="errorList"
+        style="margin-bottom: 16px"
+    ></nz-alert>
+    <ng-template #errorList>
+        <ul>
+            <li *ngFor="let error of errors">{{ error }}</li>
+        </ul>
+    </ng-template>
+</ng-container>
+
 <form nz-form [formGroup]="customerForm" class="form" (ngSubmit)="onSubmit()">
     <nz-form-item>
         <nz-form-control nzErrorTip="Please provide a valid name.">
@@ -23,8 +37,8 @@
                 <input
                     type="text"
                     nz-input
-                    formControlName="email"
-                    placeholder="Email"
+                    formControlName="emailAddress"
+                    placeholder="Email address"
                 />
             </nz-input-group>
         </nz-form-control>
@@ -50,6 +64,7 @@
                     nz-button
                     nzType="primary"
                     [disabled]="!customerForm.valid"
+                    [nzLoading]="isSaving"
                 >
                     Save
                 </button>

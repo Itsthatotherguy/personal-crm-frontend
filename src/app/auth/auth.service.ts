@@ -16,11 +16,12 @@ export class AuthService {
 
     constructor(private httpClient: HttpClient, private router: Router) {}
 
-    signup(signupRequest: SignupRequest) {
+    signup(signupRequest: SignupRequest): Observable<AuthResponse> {
+        console.log(signupRequest);
         return this.httpClient
             .post<AuthResponse>('auth/signup', signupRequest)
             .pipe(
-                catchError(this.handleError),
+                catchError(this.handleErrorMessages),
                 tap((responseData) => {
                     this.handleAuthentication(
                         responseData.accessToken,
@@ -34,7 +35,7 @@ export class AuthService {
         return this.httpClient
             .post<AuthResponse>('auth/login', loginRequest)
             .pipe(
-                catchError(this.handleError),
+                catchError(this.handleErrorMessages),
                 tap((responseData) => {
                     this.handleAuthentication(
                         responseData.accessToken,
@@ -44,11 +45,15 @@ export class AuthService {
             );
     }
 
-    autoLogin() {
+    autoLogin(): void {
         const userData: {
             _token: string;
             _tokenExpirationDate: string;
         } = JSON.parse(localStorage.getItem('userData'));
+
+        if (!userData) {
+            return;
+        }
 
         const loadedUser = new User(
             userData._token,
@@ -60,7 +65,7 @@ export class AuthService {
         }
     }
 
-    logout() {
+    logout(): void {
         this.user.next(null);
         this.router.navigate(['auth/login']);
         localStorage.removeItem('userData');
@@ -75,13 +80,47 @@ export class AuthService {
         localStorage.setItem('userData', JSON.stringify(user));
     }
 
-    private handleError(errorRes: HttpErrorResponse) {
-        let errorMessage = 'An unknown error occurred!';
-        if (!errorRes.error || !errorRes.error.mesage) {
+    private handleErrorMessages(
+        errorResponse: HttpErrorResponse
+    ): Observable<never> {
+        console.log(errorResponse);
+
+        let errorMessage =
+            'An unknown error has occurred. Please try again in a while.';
+
+        if (!errorResponse.error || !errorResponse.error.message) {
             return throwError(errorMessage);
         }
-        switch (errorRes.error.message) {
+
+        enum AuthErrors {
+            DUPLICATE_EMAIL = 'DUPLICATE_EMAIL',
+            INVALID_CREDENTIALS = 'INVALID_CREDENTIALS',
+            UNAUTHORIZED = 'UNAUTHORIZED',
+            EMPTY_EMAIL = 'EMPTY_EMAIL',
+            EMPTY_PASSWORD = 'EMPTY_PASSWORD',
+            EMPTY_NAME = 'EMPTY_NAME',
         }
+
+        switch (errorResponse.error.message) {
+            case AuthErrors.DUPLICATE_EMAIL:
+                errorMessage = 'This email address already exists';
+                break;
+            case AuthErrors.DUPLICATE_EMAIL:
+                errorMessage = 'Please provide valid credentials';
+                break;
+            case AuthErrors.EMPTY_EMAIL:
+                errorMessage = 'Please provide a valid email';
+                break;
+            case AuthErrors.EMPTY_NAME:
+                errorMessage = 'Please provide a name';
+                break;
+            case AuthErrors.EMPTY_PASSWORD:
+                errorMessage = 'Please provide a password';
+                break;
+            default:
+                break;
+        }
+
         return throwError(errorMessage);
     }
 }

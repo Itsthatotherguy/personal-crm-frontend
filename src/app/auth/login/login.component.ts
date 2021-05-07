@@ -11,6 +11,8 @@ import { AuthService } from '../auth.service';
 })
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
+    isLoggingIn = false;
+    error: string = null;
 
     constructor(private authService: AuthService, private router: Router) {}
 
@@ -18,32 +20,38 @@ export class LoginComponent implements OnInit {
         this.initForm();
     }
 
-    onSubmit() {
+    onSubmit(): void {
         const emailAddress = this.loginForm.value.email;
         const password = this.loginForm.value.password;
 
         const request = new LoginRequest(emailAddress, password);
 
+        this.isLoggingIn = true;
+
         this.authService.login(request).subscribe({
             next: (responseData) => {
-                console.log('Successful login: ', responseData);
+                this.isLoggingIn = false;
                 this.router.navigate(['/']);
             },
             error: (errorMessage) => {
-                console.log('Error during login: ', errorMessage);
+                this.error = errorMessage;
+                this.isLoggingIn = false;
             },
         });
 
         this.loginForm.reset();
     }
 
-    private initForm() {
+    private initForm(): void {
         this.loginForm = new FormGroup({
-            email: new FormControl(null, [
-                Validators.required,
-                Validators.email,
-            ]),
-            password: new FormControl(null, [Validators.required]),
+            email: new FormControl(null, {
+                validators: [Validators.required, Validators.email],
+                updateOn: 'blur',
+            }),
+            password: new FormControl(null, {
+                validators: [Validators.required],
+                updateOn: 'blur',
+            }),
         });
     }
 }

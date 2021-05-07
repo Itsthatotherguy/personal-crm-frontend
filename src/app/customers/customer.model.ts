@@ -1,6 +1,6 @@
-export interface Customer {
+export class Customer {
     id: string;
     name: string;
-    email: string;
+    emailAddress: string;
     phoneNumber: string;
 }
