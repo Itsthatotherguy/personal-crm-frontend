@@ -11,9 +11,11 @@ import { CustomerService } from '../customer.service';
     styleUrls: ['./customer-detail.component.css'],
 })
 export class CustomerDetailComponent implements OnInit {
-    customerId: string;
-    customer: Customer;
+    customerId: string = null;
+    customer: Customer = null;
+    isFetching = true;
     isDeleting = false;
+    errors: string[] = [];
 
     constructor(
         private route: ActivatedRoute,
@@ -27,13 +29,23 @@ export class CustomerDetailComponent implements OnInit {
         this.route.params.subscribe({
             next: (params: Params) => {
                 this.customerId = params['id'];
-                this.customer = this.customerService.getCustomer(
-                    this.customerId
-                );
-                console.log(this.customer);
-                if (!this.customer) {
+
+                this.fetchCustomer();
+                if (!this.customer && !this.isFetching) {
                     this.router.navigate(['not-found']);
                 }
+            },
+        });
+    }
+
+    private fetchCustomer() {
+        this.customerService.getCustomer(this.customerId).subscribe({
+            next: (customer: Customer) => {
+                this.isFetching = false;
+                this.customer = customer;
+            },
+            error: (errorMessages) => {
+                this.errors = errorMessages;
             },
         });
     }

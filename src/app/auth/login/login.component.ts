@@ -7,12 +7,11 @@ import { AuthService } from '../auth.service';
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
     isLoggingIn = false;
-    error: string = null;
+    errors: string[] = [];
 
     constructor(private authService: AuthService, private router: Router) {}
 
@@ -33,8 +32,8 @@ export class LoginComponent implements OnInit {
                 this.isLoggingIn = false;
                 this.router.navigate(['/']);
             },
-            error: (errorMessage) => {
-                this.error = errorMessage;
+            error: (errorMessages) => {
+                this.errors = errorMessages;
                 this.isLoggingIn = false;
             },
         });

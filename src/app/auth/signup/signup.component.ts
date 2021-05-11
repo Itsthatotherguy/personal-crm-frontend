@@ -7,12 +7,11 @@ import { SignupRequest } from '../requests/signup.request';
 @Component({
     selector: 'app-signup',
     templateUrl: './signup.component.html',
-    styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent implements OnInit {
     signupForm: FormGroup;
     isSigningUp = false;
-    error: string = null;
+    errors: string[] = [];
 
     constructor(private authService: AuthService, private router: Router) {}
 
@@ -34,8 +33,8 @@ export class SignupComponent implements OnInit {
                 this.isSigningUp = false;
                 this.router.navigate(['/']);
             },
-            error: (errorMessage) => {
-                this.error = errorMessage;
+            error: (errorMessages) => {
+                this.errors = errorMessages;
                 this.isSigningUp = false;
             },
         });

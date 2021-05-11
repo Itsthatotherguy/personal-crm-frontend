@@ -14,6 +14,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 import { CreateCustomerComponent } from './create-customer/create-customer.component';
 import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
@@ -53,6 +54,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
         NzAlertModule,
         NzButtonModule,
         NzMenuModule,
+        NzSkeletonModule,
     ],
     declarations: [
         SidebarComponent,

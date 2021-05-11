@@ -9,7 +9,7 @@
         nzType="error"
         nzMessage="The following errors occurred:"
         [nzDescription]="errorList"
-        style="margin-bottom: 16px"
+        class="alert-box"
     ></nz-alert>
     <ng-template #errorList>
         <ul>
@@ -18,7 +18,15 @@
     </ng-template>
 </ng-container>
 
-<form nz-form [formGroup]="customerForm" class="form" (ngSubmit)="onSubmit()">
+<nz-skeleton *ngIf="isFetching"></nz-skeleton>
+
+<form
+    nz-form
+    [formGroup]="customerForm"
+    class="form"
+    (ngSubmit)="onSubmit()"
+    *ngIf="!isFetching && errors.length < 1"
+>
     <nz-form-item>
         <nz-form-control nzErrorTip="Please provide a valid name.">
             <nz-input-group>

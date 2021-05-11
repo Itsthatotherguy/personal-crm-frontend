@@ -1,10 +1,17 @@
 <h3 nz-typography style="text-align: center">Login</h3>
-<nz-alert
-    nzType="error"
-    nzMessage="{{ error }}"
-    *ngIf="error !== null"
-    style="margin-bottom: 8px"
-></nz-alert>
+<ng-container *ngIf="errors.length > 0">
+    <nz-alert
+        nzType="error"
+        nzMessage="The following errors occured:"
+        [nzDescription]="errorList"
+        class="alert-box"
+    ></nz-alert>
+    <ng-template #errorList>
+        <ul>
+            <li *ngFor="let error of errors">{{ error }}</li>
+        </ul>
+    </ng-template>
+</ng-container>
 <form nz-form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <nz-form-item>
         <nz-form-control nzHasFeedback [nzErrorTip]="emailErrorTip">

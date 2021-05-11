@@ -21,7 +21,7 @@ export class AuthService {
         return this.httpClient
             .post<AuthResponse>('auth/signup', signupRequest)
             .pipe(
-                catchError(this.handleErrorMessages),
+                catchError(this.handleErrorMessages.bind(this)),
                 tap((responseData) => {
                     this.handleAuthentication(
                         responseData.accessToken,
@@ -35,7 +35,7 @@ export class AuthService {
         return this.httpClient
             .post<AuthResponse>('auth/login', loginRequest)
             .pipe(
-                catchError(this.handleErrorMessages),
+                catchError(this.handleErrorMessages.bind(this)),
                 tap((responseData) => {
                     this.handleAuthentication(
                         responseData.accessToken,
@@ -85,12 +85,31 @@ export class AuthService {
     ): Observable<never> {
         console.log(errorResponse);
 
-        let errorMessage =
-            'An unknown error has occurred. Please try again in a while.';
+        let errorMessages: string[] = [
+            'An unknown error has occurred. Please try again in a while.',
+        ];
 
         if (!errorResponse.error || !errorResponse.error.message) {
-            return throwError(errorMessage);
+            return throwError(errorMessages);
         }
+
+        if (Array.isArray(errorResponse.error.message)) {
+            const messages = errorResponse.error.message;
+
+            errorMessages = messages.map((errorResponseMessage) =>
+                this.determineErrorMessage(errorResponseMessage)
+            );
+        } else {
+            const message = errorResponse.error.message;
+
+            errorMessages = [this.determineErrorMessage(message)];
+        }
+
+        return throwError(errorMessages);
+    }
+
+    private determineErrorMessage(errorResponseMessage: string): any {
+        let errorMessage: string;
 
         enum AuthErrors {
             DUPLICATE_EMAIL = 'DUPLICATE_EMAIL',
@@ -101,7 +120,7 @@ export class AuthService {
             EMPTY_NAME = 'EMPTY_NAME',
         }
 
-        switch (errorResponse.error.message) {
+        switch (errorResponseMessage) {
             case AuthErrors.DUPLICATE_EMAIL:
                 errorMessage = 'This email address already exists';
                 break;
@@ -121,6 +140,6 @@ export class AuthService {
                 break;
         }
 
-        return throwError(errorMessage);
+        return errorMessage;
     }
 }
