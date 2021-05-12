@@ -1,29 +1,28 @@
-import { AuthService } from './../../auth/auth.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { selectUser } from 'src/app/auth/store/auth.selectors';
+
+import * as AuthActions from '../../auth/store/auth.actions';
 
 @Component({
     selector: 'app-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit {
     isAuthenticated = false;
-    private userSubscription: Subscription;
 
-    constructor(private authService: AuthService) {}
+    constructor(private store: Store) {}
 
     ngOnInit(): void {
-        this.userSubscription = this.authService.user.subscribe((user) => {
-            this.isAuthenticated = !!user;
+        this.store.pipe(select(selectUser)).subscribe({
+            next: (user) => {
+                this.isAuthenticated = !!user;
+            },
         });
     }
 
-    ngOnDestroy(): void {
-        this.userSubscription.unsubscribe();
-    }
-
     onClickLogout(): void {
-        this.authService.logout();
+        this.store.dispatch(AuthActions.logout());
     }
 }

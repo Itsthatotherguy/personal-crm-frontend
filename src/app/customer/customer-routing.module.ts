@@ -4,14 +4,14 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '../auth/auth.guard';
 import { CreateCustomerComponent } from './create-customer/create-customer.component';
 import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
-import { CustomersComponent } from './customers.component';
+import { CustomerComponent } from './customer.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 
 const routes: Routes = [
     {
         path: '',
         canActivate: [AuthGuard],
-        component: CustomersComponent,
+        component: CustomerComponent,
         children: [
             { path: '', pathMatch: 'full', component: WelcomeComponent },
             { path: 'new', component: CreateCustomerComponent },
@@ -25,4 +25,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
 })
-export class CustomersRoutingModule {}
+export class CustomerRoutingModule {}

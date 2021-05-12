@@ -1,5 +1,5 @@
 <h3 nz-typography style="text-align: center">Login</h3>
-<ng-container *ngIf="errors.length > 0">
+<ng-container *ngIf="errors$ | async as errors">
     <nz-alert
         nzType="error"
         nzMessage="The following errors occured:"
@@ -50,7 +50,7 @@
             nz-button
             type="submit"
             nzType="primary"
-            [nzLoading]="isLoggingIn"
+            [nzLoading]="isLoggingIn$ | async"
             [disabled]="!loginForm.valid"
         >
             Login

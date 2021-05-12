@@ -12,6 +12,10 @@ import { AuthComponent } from './auth.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { CommonModule } from '@angular/common';
+import { StoreModule } from '@ngrx/store';
+import * as fromAuth from './store/auth.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthEffects } from './store/auth.effects';
 
 @NgModule({
     imports: [
@@ -24,6 +28,8 @@ import { CommonModule } from '@angular/common';
         NzInputModule,
         NzButtonModule,
         NzAlertModule,
+        StoreModule.forFeature(fromAuth.authFeatureKey, fromAuth.reducer),
+        EffectsModule.forFeature([AuthEffects]),
     ],
     declarations: [AuthComponent, SignupComponent, LoginComponent],
     providers: [],

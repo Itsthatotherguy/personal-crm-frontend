@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from '../auth.service';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { SignupRequest } from '../requests/signup.request';
+import * as AuthActions from '../store/auth.actions';
+import {
+    selectAuthenticating,
+    selectAuthErrors,
+} from '../store/auth.selectors';
 
 @Component({
     selector: 'app-signup',
@@ -10,12 +15,16 @@ import { SignupRequest } from '../requests/signup.request';
 })
 export class SignupComponent implements OnInit {
     signupForm: FormGroup;
-    isSigningUp = false;
-    errors: string[] = [];
 
-    constructor(private authService: AuthService, private router: Router) {}
+    isSigningUp$: Observable<boolean>;
+    errors$: Observable<string[]>;
+
+    constructor(private store: Store) {}
 
     ngOnInit(): void {
+        this.isSigningUp$ = this.store.pipe(select(selectAuthenticating));
+        this.errors$ = this.store.pipe(select(selectAuthErrors));
+
         this.initForm();
     }
 
@@ -25,21 +34,10 @@ export class SignupComponent implements OnInit {
         const password = this.signupForm.value.password;
 
         const request = new SignupRequest(name, email, password);
-        console.log(request);
-        this.isSigningUp = true;
 
-        this.authService.signup(request).subscribe({
-            next: (responseData) => {
-                this.isSigningUp = false;
-                this.router.navigate(['/']);
-            },
-            error: (errorMessages) => {
-                this.errors = errorMessages;
-                this.isSigningUp = false;
-            },
-        });
-
-        this.signupForm.reset();
+        this.store.dispatch(
+            AuthActions.signupStart({ signupRequest: request })
+        );
     }
 
     private initForm(): void {

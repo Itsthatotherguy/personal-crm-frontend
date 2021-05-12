@@ -11,8 +11,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core.module';
 import { SharedModule } from './shared/shared.module';
-import { CustomersModule } from './customers/customers.module';
+import { CustomerModule } from './customer/customer.module';
 import { AuthModule } from './auth/auth.module';
+import { StoreModule } from '@ngrx/store';
+import { reducers } from './store/reducer';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { EffectsModule } from '@ngrx/effects';
 
 registerLocaleData(en);
 
@@ -26,8 +31,11 @@ registerLocaleData(en);
         NzLayoutModule,
         CoreModule,
         SharedModule,
-        CustomersModule,
+        CustomerModule,
         AuthModule,
+        StoreModule.forRoot(reducers),
+        !environment.production ? StoreDevtoolsModule.instrument() : [],
+        EffectsModule.forRoot(),
     ],
     bootstrap: [AppComponent],
 })

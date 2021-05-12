@@ -7,15 +7,15 @@ import {
     HttpHandler,
     HttpEvent,
     HttpInterceptor,
-    HttpEventType,
-    HttpResponse,
     HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
+import { Store } from '@ngrx/store';
+import * as AuthActions from '../auth/store/auth.actions';
 
 @Injectable()
 export class ApiInterceptor implements HttpInterceptor {
-    constructor(private authService: AuthService) {}
+    constructor(private store: Store) {}
 
     intercept(
         request: HttpRequest<unknown>,
@@ -28,22 +28,11 @@ export class ApiInterceptor implements HttpInterceptor {
         return next.handle(apiRequest).pipe(
             catchError((errorResponse: HttpErrorResponse) => {
                 if (errorResponse.status === 401) {
-                    this.authService.logout();
+                    this.store.dispatch(AuthActions.logout());
                 }
 
                 return throwError(errorResponse);
             })
-            // tap((event: HttpEvent<unknown>) => {
-            //     console.log(event);
-            //     if (event instanceof HttpResponse) {
-            //         console.log('Hallo');
-            //         const response = <HttpResponse<any>>event;
-
-            //         if (response.status === 401) {
-            //             this.authService.logout();
-            //         }
-            //     }
-            // })
         );
     }
 }

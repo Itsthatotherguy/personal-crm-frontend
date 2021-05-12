@@ -3,13 +3,11 @@ import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 
 const routes: Routes = [
-    { path: '', pathMatch: 'full', redirectTo: 'customers' },
+    { path: '', pathMatch: 'full', redirectTo: 'customer' },
     {
-        path: 'customers',
+        path: 'customer',
         loadChildren: () =>
-            import('./customers/customers.module').then(
-                (m) => m.CustomersModule
-            ),
+            import('./customer/customer.module').then((m) => m.CustomerModule),
     },
     {
         path: 'auth',

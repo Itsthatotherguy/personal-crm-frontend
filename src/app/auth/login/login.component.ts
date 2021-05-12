@@ -1,8 +1,13 @@
-import { Router } from '@angular/router';
 import { LoginRequest } from './../requests/login.request.ts';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../auth.service';
+import { Observable } from 'rxjs';
+import { select, Store } from '@ngrx/store';
+import * as AuthActions from '../store/auth.actions';
+import {
+    selectAuthenticating,
+    selectAuthErrors,
+} from '../store/auth.selectors';
 
 @Component({
     selector: 'app-login',
@@ -10,12 +15,16 @@ import { AuthService } from '../auth.service';
 })
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
-    isLoggingIn = false;
-    errors: string[] = [];
 
-    constructor(private authService: AuthService, private router: Router) {}
+    isLoggingIn$: Observable<boolean>;
+    errors$: Observable<string[]>;
+
+    constructor(private store: Store) {}
 
     ngOnInit(): void {
+        this.isLoggingIn$ = this.store.pipe(select(selectAuthenticating));
+        this.errors$ = this.store.pipe(select(selectAuthErrors));
+
         this.initForm();
     }
 
@@ -25,20 +34,7 @@ export class LoginComponent implements OnInit {
 
         const request = new LoginRequest(emailAddress, password);
 
-        this.isLoggingIn = true;
-
-        this.authService.login(request).subscribe({
-            next: (responseData) => {
-                this.isLoggingIn = false;
-                this.router.navigate(['/']);
-            },
-            error: (errorMessages) => {
-                this.errors = errorMessages;
-                this.isLoggingIn = false;
-            },
-        });
-
-        this.loginForm.reset();
+        this.store.dispatch(AuthActions.loginStart({ loginRequest: request }));
     }
 
     private initForm(): void {

@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { Customer } from './customer.model';
+import { Customer } from './store/customer.model';
 import { UpdateCustomerRequest } from './dto/requests/update-customer.request';
 import { CreateCustomerRequest } from './dto/requests/create-customer.request';
 
@@ -14,21 +14,6 @@ export class CustomerService {
     customersChanged = new Subject<Customer[]>();
     filterStringHasChanged = new Subject<string>();
     currentCustomerChanged = new Subject<Customer>();
-
-    // private customers: Customer[] = [
-    //     {
-    //         id: 1,
-    //         name: 'Chris',
-    //         email: 'chrisvdm0410@gmail.com',
-    //         phoneNumber: '074 066 9832',
-    //     },
-    //     {
-    //         id: 2,
-    //         name: 'Melanie',
-    //         email: 'kennedy.melanie.mk@gmail.com',
-    //         phoneNumber: '076 307 2380',
-    //     },
-    // ];
 
     private customers: Customer[] = [];
     public currentCustomer: Customer;
@@ -45,21 +30,11 @@ export class CustomerService {
 
     getCustomers(): Observable<Customer[]> {
         return this.httpClient.get<Customer[]>('customers').pipe(
-            catchError(this.handleErrorMessages.bind(this)),
-            tap((customers: Customer[]) => {
-                this.setCustomers(customers);
-            })
+            catchError(this.handleErrorMessages.bind(this))
+            // tap((customers: Customer[]) => {
+            //     this.setCustomers(customers);
+            // })
         );
-    }
-
-    getCustomer(id: string): Observable<Customer> {
-        return this.httpClient.get<Customer>(`customers/${id}`).pipe(
-            catchError(this.handleErrorMessages.bind(this)),
-            tap((customer: Customer) => {
-                this.currentCustomer = customer;
-            })
-        );
-        // return this.customers.find((customer) => customer.id === id);
     }
 
     createCustomer(
@@ -67,13 +42,7 @@ export class CustomerService {
     ): Observable<Customer> {
         return this.httpClient
             .post<Customer>('customers', createCustomerRequest)
-            .pipe(
-                catchError(this.handleErrorMessages.bind(this)),
-                tap((newCustomer: Customer) => {
-                    this.customers.push(newCustomer);
-                    this.customersChanged.next(this.customers.slice());
-                })
-            );
+            .pipe(catchError(this.handleErrorMessages.bind(this)));
     }
 
     updateCustomer(
@@ -82,32 +51,13 @@ export class CustomerService {
     ): Observable<Customer> {
         return this.httpClient
             .put<Customer>(`customers/${id}`, updateCustomerRequest)
-            .pipe(
-                catchError(this.handleErrorMessages.bind(this)),
-                tap((updatedCustomer: Customer) => {
-                    this.customers = this.customers.map((customer) => {
-                        if (customer.id === updatedCustomer.id) {
-                            return updatedCustomer;
-                        } else {
-                            return customer;
-                        }
-                    });
-
-                    this.customersChanged.next(this.customers.slice());
-                })
-            );
+            .pipe(catchError(this.handleErrorMessages.bind(this)));
     }
 
     deleteCustomer(id: string): Observable<void> {
-        return this.httpClient.delete<void>(`customers/${id}`).pipe(
-            catchError(this.handleErrorMessages.bind(this)),
-            tap(() => {
-                this.customers = this.customers.filter(
-                    (customer) => customer.id !== id
-                );
-                this.customersChanged.next(this.customers.slice());
-            })
-        );
+        return this.httpClient
+            .delete<void>(`customers/${id}`)
+            .pipe(catchError(this.handleErrorMessages.bind(this)));
     }
 
     private handleErrorMessages(

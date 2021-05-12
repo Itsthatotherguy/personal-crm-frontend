@@ -1,4 +1,4 @@
-<ng-container *ngIf="!isFetching && errors.length < 1">
+<ng-container *ngIf="customer$ | async as customer">
     <nz-page-header>
         <nz-page-header-title>{{ customer.name }}</nz-page-header-title>
         <nz-page-header-extra>
