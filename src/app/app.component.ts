@@ -10,7 +10,7 @@ import * as AuthActions from './auth/store/auth.actions';
 export class AppComponent implements OnInit {
     constructor(private store: Store) {}
 
-    ngOnInit() {
-        // this.store.dispatch(AuthActions.autoLogin());
+    ngOnInit(): void {
+        this.store.dispatch(AuthActions.autoLogin());
     }
 }

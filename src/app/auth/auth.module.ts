@@ -16,6 +16,7 @@ import { StoreModule } from '@ngrx/store';
 import * as fromAuth from './store/auth.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './store/auth.effects';
+import { HttpWarningComponent } from './http-warning/http-warning.component';
 
 @NgModule({
     imports: [
@@ -31,7 +32,12 @@ import { AuthEffects } from './store/auth.effects';
         StoreModule.forFeature(fromAuth.authFeatureKey, fromAuth.reducer),
         EffectsModule.forFeature([AuthEffects]),
     ],
-    declarations: [AuthComponent, SignupComponent, LoginComponent],
+    declarations: [
+        AuthComponent,
+        SignupComponent,
+        LoginComponent,
+        HttpWarningComponent,
+    ],
     providers: [],
     exports: [],
 })

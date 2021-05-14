@@ -1,3 +1,4 @@
+<app-http-warning></app-http-warning>
 <h3 nz-typography style="text-align: center">Signup</h3>
 <ng-container *ngIf="errors$ | async as errors">
     <nz-alert
@@ -15,7 +16,7 @@
 <form nz-form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
     <nz-form-item>
         <nz-form-control nzHasFeedback [nzErrorTip]="nameErrorTip">
-            <nz-input-group nzPrefixIcon="user">
+            <nz-input-group>
                 <input nz-input formControlName="name" placeholder="Name" />
                 <ng-template #nameErrorTip let-control>
                     <ng-container *ngIf="control.hasError('required')">
@@ -27,7 +28,7 @@
     </nz-form-item>
     <nz-form-item>
         <nz-form-control nzHasFeedback [nzErrorTip]="emailErrorTip">
-            <nz-input-group nzPrefixIcon="mail">
+            <nz-input-group>
                 <input nz-input formControlName="email" placeholder="Email" />
                 <ng-template #emailErrorTip let-control>
                     <ng-container *ngIf="control.hasError('required')">
@@ -42,7 +43,7 @@
     </nz-form-item>
     <nz-form-item>
         <nz-form-control nzHasFeedback [nzErrorTip]="passwordErrorTip">
-            <nz-input-group nzPrefixIcon="lock">
+            <nz-input-group>
                 <input
                     nz-input
                     type="password"

@@ -27,9 +27,13 @@ export class CustomerEffects {
                     map((customers) =>
                         CustomerActions.loadCustomersSuccess({ customers })
                     ),
-                    catchError((errors: string[]) =>
-                        of(CustomerActions.loadCustomersFail({ errors }))
-                    )
+                    catchError((errors: string[]) => {
+                        console.error(errors);
+
+                        return of(
+                            CustomerActions.loadCustomersFail({ errors })
+                        );
+                    })
                 )
             )
         )

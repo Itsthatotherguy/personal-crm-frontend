@@ -12,6 +12,7 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as AuthActions from '../auth/store/auth.actions';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class ApiInterceptor implements HttpInterceptor {
@@ -21,8 +22,12 @@ export class ApiInterceptor implements HttpInterceptor {
         request: HttpRequest<unknown>,
         next: HttpHandler
     ): Observable<HttpEvent<unknown>> {
+        const baseUrl = environment.production
+            ? 'http://personal-crm-backend-dev.eu-west-1.elasticbeanstalk.com'
+            : 'http://localhost:3000';
+
         const apiRequest = request.clone({
-            url: `http://localhost:3000/${request.url}`,
+            url: baseUrl + '/' + request.url,
         });
 
         return next.handle(apiRequest).pipe(

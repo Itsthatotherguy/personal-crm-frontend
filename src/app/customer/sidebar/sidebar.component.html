@@ -15,9 +15,9 @@
     <nz-spin
         nzSimple
         style="text-align: center"
-        *ngIf="isFetching$ | async as isFetching; else doneFetching"
+        *ngIf="isFetching$ | async; else doneFetching"
     ></nz-spin>
-    <ng-container #doneFetching>
+    <ng-template #doneFetching>
         <ng-container *ngIf="customers$ | async as customers">
             <li
                 nz-menu-item
@@ -38,5 +38,5 @@
                 </p>
             </ng-container>
         </ng-container>
-    </ng-container>
+    </ng-template>
 </ul>

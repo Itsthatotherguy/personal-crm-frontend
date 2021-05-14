@@ -48,15 +48,6 @@ export class AuthEffects {
         )
     );
 
-    // loginSuccess$ = createEffect(() =>
-    //     this.actions$.pipe(
-    //         ofType(AuthActions.loginSuccess),
-    //         tap(() => {
-    //             this.router.navigate(['/']);
-    //         })
-    //     )
-    // );
-
     signup$ = createEffect(() =>
         this.actions$.pipe(
             ofType(AuthActions.signupStart),

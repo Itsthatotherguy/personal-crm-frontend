@@ -19,15 +19,15 @@ export const initialState: State = {
 export const reducer = createReducer(
     initialState,
 
-    on(AuthActions.loginStart, (state) => ({
-        ...state,
-        isAuthenticating: true,
-        authErrors: null,
-    })),
+    on(AuthActions.loginStart, (state) => {
+        return {
+            ...state,
+            isAuthenticating: true,
+            authErrors: null,
+        };
+    }),
 
     on(AuthActions.authSuccess, (state, action) => {
-        console.log(state);
-        console.log(action);
         return {
             ...state,
             isAuthenticating: false,
@@ -35,21 +35,34 @@ export const reducer = createReducer(
         };
     }),
 
-    on(AuthActions.authFail, (state, action) => ({
-        ...state,
-        user: null,
-        isAuthenticating: false,
-        authErrors: action.errors,
-    })),
+    on(AuthActions.authFail, (state, action) => {
+        return {
+            ...state,
+            user: null,
+            isAuthenticating: false,
+            authErrors: action.errors,
+        };
+    }),
 
-    on(AuthActions.logout, (state) => ({
-        ...state,
-        user: null,
-    })),
+    on(AuthActions.logout, (state) => {
+        return {
+            ...state,
+            user: null,
+        };
+    }),
 
-    on(AuthActions.signupStart, (state) => ({
-        ...state,
-        isAuthenticating: true,
-        authErrors: null,
-    }))
+    on(AuthActions.signupStart, (state) => {
+        return {
+            ...state,
+            isAuthenticating: true,
+            authErrors: null,
+        };
+    }),
+
+    on(AuthActions.clearErrors, (state) => {
+        return {
+            ...state,
+            authErrors: null,
+        };
+    })
 );

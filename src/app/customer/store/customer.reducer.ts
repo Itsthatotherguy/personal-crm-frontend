@@ -6,7 +6,6 @@ import * as CustomerActions from './customer.actions';
 export const customersFeatureKey = 'customer';
 
 export interface State extends EntityState<Customer> {
-    // additional entities state properties
     isFetchingCustomers: boolean;
     isSavingCustomer: boolean;
     isDeletingCustomer: boolean;
@@ -33,68 +32,80 @@ export const initialState: State = adapter.getInitialState({
 
 export const reducer = createReducer(
     initialState,
-    on(CustomerActions.addCustomerStart, (state, action) => ({
-        ...state,
-        isSavingCustomer: true,
-        savingCustomerErrors: null,
-    })),
-    on(CustomerActions.addCustomerSuccess, (state, action) =>
-        adapter.addOne(action.customer, {
+    on(CustomerActions.addCustomerStart, (state, action) => {
+        return {
+            ...state,
+            isSavingCustomer: true,
+            savingCustomerErrors: null,
+        };
+    }),
+    on(CustomerActions.addCustomerSuccess, (state, action) => {
+        return adapter.addOne(action.customer, {
             ...state,
             isSavingCustomer: false,
-        })
-    ),
-    on(CustomerActions.addCustomerFail, (state, action) => ({
-        ...state,
-        isSavingCustomer: false,
-        savingCustomerErrors: action.errors,
-    })),
-    on(CustomerActions.updateCustomerStart, (state, action) => ({
-        ...state,
-        isSavingCustomer: true,
-        savingCustomerErrors: null,
-    })),
-    on(CustomerActions.updateCustomerSuccess, (state, action) =>
-        adapter.setOne(action.customer, {
+        });
+    }),
+    on(CustomerActions.addCustomerFail, (state, action) => {
+        return {
             ...state,
             isSavingCustomer: false,
-        })
-    ),
-    on(CustomerActions.updateCustomerFail, (state, action) => ({
-        ...state,
-        isSavingCustomer: false,
-        savingCustomerErrors: action.errors,
-    })),
-    on(CustomerActions.deleteCustomerStart, (state, action) => ({
-        ...state,
-        isDeletingCustomer: true,
-        deletingCustomersErrors: null,
-    })),
-    on(CustomerActions.deleteCustomerSuccess, (state, action) =>
-        adapter.removeOne(state.currentCustomerId, {
+            savingCustomerErrors: action.errors,
+        };
+    }),
+    on(CustomerActions.updateCustomerStart, (state, action) => {
+        return {
+            ...state,
+            isSavingCustomer: true,
+            savingCustomerErrors: null,
+        };
+    }),
+    on(CustomerActions.updateCustomerSuccess, (state, action) => {
+        return adapter.setOne(action.customer, {
+            ...state,
+            isSavingCustomer: false,
+        });
+    }),
+    on(CustomerActions.updateCustomerFail, (state, action) => {
+        return {
+            ...state,
+            isSavingCustomer: false,
+            savingCustomerErrors: action.errors,
+        };
+    }),
+    on(CustomerActions.deleteCustomerStart, (state) => {
+        return {
+            ...state,
+            isDeletingCustomer: true,
+            deletingCustomersErrors: null,
+        };
+    }),
+    on(CustomerActions.deleteCustomerSuccess, (state) => {
+        return adapter.removeOne(state.currentCustomerId, {
             ...state,
             isDeletingCustomer: false,
             currentCustomerId: null,
-        })
-    ),
-    on(CustomerActions.deleteCustomerFail, (state, action) => ({
-        ...state,
-        isDeletingCustomer: false,
-        deletingCustomersErrors: action.errors,
-    })),
-    on(CustomerActions.loadCustomersStart, (state, action) => {
+        });
+    }),
+    on(CustomerActions.deleteCustomerFail, (state, action) => {
+        return {
+            ...state,
+            isDeletingCustomer: false,
+            deletingCustomersErrors: action.errors,
+        };
+    }),
+    on(CustomerActions.loadCustomersStart, (state) => {
         return {
             ...state,
             isFetchingCustomers: true,
             fetchingCustomersErrors: null,
         };
     }),
-    on(CustomerActions.loadCustomersSuccess, (state, action) =>
-        adapter.setAll(action.customers, {
+    on(CustomerActions.loadCustomersSuccess, (state, action) => {
+        return adapter.setAll(action.customers, {
             ...state,
             isFetchingCustomers: false,
-        })
-    ),
+        });
+    }),
     on(CustomerActions.loadCustomersFail, (state, action) => {
         return {
             ...state,
@@ -102,18 +113,24 @@ export const reducer = createReducer(
             fetchingCustomersErrors: action.errors,
         };
     }),
-    on(CustomerActions.initCustomerDetailPage, (state, action) => ({
-        ...state,
-        currentCustomerId: action.id,
-    })),
-    on(CustomerActions.destroyCustomerDetailPage, (state, action) => ({
-        ...state,
-        currentCustomerId: null,
-    })),
-    on(CustomerActions.setFilterString, (state, action) => ({
-        ...state,
-        filterString: action.filterString,
-    }))
+    on(CustomerActions.initCustomerDetailPage, (state, action) => {
+        return {
+            ...state,
+            currentCustomerId: action.id,
+        };
+    }),
+    on(CustomerActions.destroyCustomerDetailPage, (state) => {
+        return {
+            ...state,
+            currentCustomerId: null,
+        };
+    }),
+    on(CustomerActions.setFilterString, (state, action) => {
+        return {
+            ...state,
+            filterString: action.filterString,
+        };
+    })
 );
 
 export const { selectIds, selectEntities, selectAll, selectTotal } =

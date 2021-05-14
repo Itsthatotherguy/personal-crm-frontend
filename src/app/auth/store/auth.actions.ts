@@ -8,16 +8,6 @@ export const loginStart = createAction(
     props<{ loginRequest: LoginRequest }>()
 );
 
-// export const loginSuccess = createAction(
-//     '[Auth] Login Success',
-//     props<{ user: User }>()
-// );
-
-// export const loginFail = createAction(
-//     '[Auth] Login Fail',
-//     props<{ errors: string[] }>()
-// );
-
 export const signupStart = createAction(
     '[Auth] Signup Start',
     props<{ signupRequest: SignupRequest }>()
@@ -36,3 +26,5 @@ export const authFail = createAction(
 export const autoLogin = createAction('[Auth] Auto Login');
 
 export const logout = createAction('[Auth] Logout');
+
+export const clearErrors = createAction('[Auth] Clear Errors');

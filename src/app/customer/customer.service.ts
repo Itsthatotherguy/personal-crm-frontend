@@ -11,30 +11,12 @@ import { CreateCustomerRequest } from './dto/requests/create-customer.request';
     providedIn: 'root',
 })
 export class CustomerService {
-    customersChanged = new Subject<Customer[]>();
-    filterStringHasChanged = new Subject<string>();
-    currentCustomerChanged = new Subject<Customer>();
-
-    private customers: Customer[] = [];
-    public currentCustomer: Customer;
-
-    constructor(
-        private httpClient: HttpClient,
-        private authService: AuthService
-    ) {}
-
-    private setCustomers(customers: Customer[]): void {
-        this.customers = customers;
-        this.customersChanged.next(this.customers.slice());
-    }
+    constructor(private httpClient: HttpClient) {}
 
     getCustomers(): Observable<Customer[]> {
-        return this.httpClient.get<Customer[]>('customers').pipe(
-            catchError(this.handleErrorMessages.bind(this))
-            // tap((customers: Customer[]) => {
-            //     this.setCustomers(customers);
-            // })
-        );
+        return this.httpClient
+            .get<Customer[]>('customers')
+            .pipe(catchError(this.handleErrorMessages.bind(this)));
     }
 
     createCustomer(
@@ -82,7 +64,7 @@ export class CustomerService {
 
             errorMessages = [this.determineErrorMessage(message)];
         }
-        console.log(errorMessages);
+
         return throwError(errorMessages);
     }
 

@@ -22,6 +22,8 @@ export class SignupComponent implements OnInit {
     constructor(private store: Store) {}
 
     ngOnInit(): void {
+        this.store.dispatch(AuthActions.clearErrors());
+
         this.isSigningUp$ = this.store.pipe(select(selectAuthenticating));
         this.errors$ = this.store.pipe(select(selectAuthErrors));
 

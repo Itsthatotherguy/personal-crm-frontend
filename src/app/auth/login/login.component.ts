@@ -22,6 +22,8 @@ export class LoginComponent implements OnInit {
     constructor(private store: Store) {}
 
     ngOnInit(): void {
+        this.store.dispatch(AuthActions.clearErrors());
+
         this.isLoggingIn$ = this.store.pipe(select(selectAuthenticating));
         this.errors$ = this.store.pipe(select(selectAuthErrors));
 

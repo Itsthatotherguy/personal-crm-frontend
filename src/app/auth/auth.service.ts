@@ -27,8 +27,6 @@ export class AuthService {
     private handleErrorMessages(
         errorResponse: HttpErrorResponse
     ): Observable<never> {
-        console.log(errorResponse);
-
         let errorMessages: string[] = [
             'An unknown error has occurred. Please try again in a while.',
         ];
@@ -79,6 +77,9 @@ export class AuthService {
                 break;
             case AuthErrors.EMPTY_PASSWORD:
                 errorMessage = 'Please provide a password';
+                break;
+            case AuthErrors.INVALID_CREDENTIALS:
+                errorMessage = 'Invalid credentials';
                 break;
             default:
                 break;

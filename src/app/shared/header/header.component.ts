@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { selectUser } from 'src/app/auth/store/auth.selectors';
+import { selectUser } from '../../auth/store/auth.selectors';
 
 import * as AuthActions from '../../auth/store/auth.actions';
 
