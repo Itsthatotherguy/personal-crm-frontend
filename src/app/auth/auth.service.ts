@@ -66,9 +66,6 @@ export class AuthService {
             case AuthErrors.DUPLICATE_EMAIL:
                 errorMessage = 'This email address already exists';
                 break;
-            case AuthErrors.DUPLICATE_EMAIL:
-                errorMessage = 'Please provide valid credentials';
-                break;
             case AuthErrors.EMPTY_EMAIL:
                 errorMessage = 'Please provide a valid email';
                 break;
