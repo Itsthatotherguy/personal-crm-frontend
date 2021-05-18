@@ -85,8 +85,8 @@ export class AuthEffects {
         { dispatch: false }
     );
 
-    autoLogin$ = createEffect(() =>
-        this.actions$.pipe(
+    autoLogin$ = createEffect(() => {
+        return this.actions$.pipe(
             ofType(AuthActions.autoLogin),
             map(() => {
                 const userData: {
@@ -112,8 +112,8 @@ export class AuthEffects {
 
                 return AuthActions.logout();
             })
-        )
-    );
+        );
+    });
 
     logout$ = createEffect(
         () =>
